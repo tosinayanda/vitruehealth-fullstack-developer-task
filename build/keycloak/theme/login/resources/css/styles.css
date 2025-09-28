@@ -1,0 +1,56 @@
+/* Change the background color */
+body {
+    background-color: #f0f8ff; /* Light blue */
+}
+
+/* Style the login form container */
+#kc-form-wrapper {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px #888888;
+}
+
+/* Style the form header */
+#kc-form-header h2 {
+    color: #007bff; /* Blue */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Example: Adjust input field styling (optional) */
+.form-group input {
+    border: 1px solid #007bff;
+    border-radius: 3px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+/* Style the login button */
+#kc-login input[type="submit"] {
+    background-color: #28a745; /* Green */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#kc-login input[type="submit"]:hover {
+    background-color: #1e7e34;
+}
+
+/* Style the logo container (example - you'll need to modify the template to display it) */
+.my-logo-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.my-logo {
+    max-width: 150px;
+    height: auto;
+}
