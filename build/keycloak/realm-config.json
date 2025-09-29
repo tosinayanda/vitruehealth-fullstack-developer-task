@@ -1,0 +1,100 @@
+{
+  "global": {
+    "users": [
+      {
+        "username": "testuser",
+        "password": "password",
+        "enabled": true,
+        "email": "test@example.com",
+        "firstName": "Test",
+        "lastName": "User",
+        "realmRoles": ["global-user"],
+        "attributes": {
+          "tenantId": "global-tenant"
+        }
+      }
+    ],
+    "clients": [
+      {
+        "clientId": "global-client",
+        "name": "Global Client",
+        "secret": "global-client-secret",
+        "redirectUris": ["http://localhost:3000/*"],
+        "webOrigins": ["http://localhost:3000"],
+        "publicClient": false,
+        "directAccessGrantsEnabled": true,
+        "standardFlowEnabled": true,
+        "adminRole": false
+      }
+    ],
+    "roles": {
+      "realm": ["global-user", "global-admin"]
+    }
+  },
+  "region-europe": {
+    "users": [
+      {
+        "username": "europeuser",
+        "password": "password",
+        "enabled": true,
+        "email": "europe@example.com",
+        "firstName": "Europe",
+        "lastName": "User",
+        "realmRoles": ["region-user"],
+        "attributes": {
+          "tenantId": "europe-tenant",
+          "region": "europe"
+        }
+      }
+    ],
+    "clients": [
+      {
+        "clientId": "region-europe-client",
+        "name": "Region Europe Client",
+        "secret": "region-europe-client-secret",
+        "redirectUris": ["http://localhost:3000/*"],
+        "webOrigins": ["http://localhost:3000"],
+        "publicClient": false,
+        "directAccessGrantsEnabled": true,
+        "standardFlowEnabled": true,
+        "adminRole": false
+      }
+    ],
+    "roles": {
+      "realm": ["region-user", "region-admin"]
+    }
+  },
+  "region-usa": {
+    "users": [
+      {
+        "username": "usauser",
+        "password": "password",
+        "enabled": true,
+        "email": "usa@example.com",
+        "firstName": "USA",
+        "lastName": "User",
+        "realmRoles": ["region-user"],
+        "attributes": {
+          "tenantId": "usa-tenant",
+          "region": "usa"
+        }
+      }
+    ],
+    "clients": [
+      {
+        "clientId": "region-usa-client",
+        "name": "Region USA Client",
+        "secret": "region-usa-client-secret",
+        "redirectUris": ["http://localhost:3000/*"],
+        "webOrigins": ["http://localhost:3000"],
+        "publicClient": false,
+        "directAccessGrantsEnabled": true,
+        "standardFlowEnabled": true,
+        "adminRole": false
+      }
+    ],
+    "roles": {
+      "realm": ["region-user", "region-admin"]
+    }
+  }
+}
