@@ -10,6 +10,12 @@ public record class SuggestionDto
     [JsonPropertyName("employeeId")]
     public Guid EmployeeId { get; set; }
 
+    [JsonPropertyName("name")]
+    public string? EmployeeName { get; set; }
+    
+    [JsonPropertyName("department")]
+    public string? EmployeeDepartment { get; set; }
+
     [JsonPropertyName("type")]
     public string Type { get; set; }
 

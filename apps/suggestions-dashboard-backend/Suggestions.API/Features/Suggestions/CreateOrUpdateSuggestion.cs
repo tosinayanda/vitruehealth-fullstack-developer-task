@@ -30,14 +30,14 @@ public static class CreateOrUpdateSuggestion
     // The command record that encapsulates the request data
     public record Command(
         Guid? Id,
-        string Description,
+        string? Description,
         string Source,
         Guid EmployeeId,
-        string Notes,
-        int CreatedByAdminId,
-        int TypeId,
-        int StatusId,
-        int PriorityId) : IRequest<Guid>;
+        string? Notes,
+        int? CreatedByAdminId,
+        string Type,
+        string Status,
+        string Priority) : IRequest<Guid>;
 
     // The validator for the command
     public class Validator : AbstractValidator<Command>
@@ -74,20 +74,12 @@ public static class CreateOrUpdateSuggestion
                 {
                     throw new KeyNotFoundException("Suggestion not found.");
                 }
-
-                // suggestion.Description = request.Description;
-                // suggestion.Source = Enum.Parse<SuggestionSource>(request.Source, true);
-                // suggestion.Type = Enum.Parse<SuggestionType>(request.TypeId.ToString(), true);
-                // suggestion.Priority = Enum.Parse<SuggestionPriority>(request.PriorityId.ToString(), true);
-                // suggestion.EmployeeId = request.EmployeeId;
-                // suggestion.Notes = request.Notes;
                 
-                suggestion.Status = Enum.Parse<SuggestionStatus>(request.StatusId.ToString(), true);
+                suggestion.Status = Enum.Parse<SuggestionStatus>(request.Status, true);
                 suggestion.DateUpdated = DateTimeOffset.UtcNow;
 
                 _db.Suggestions.Update(suggestion);
 
-                // The AuditingInterceptor will automatically create the audit log here
                 await _db.SaveChangesAsync(cancellationToken);
             }
             else
@@ -95,11 +87,11 @@ public static class CreateOrUpdateSuggestion
                 // Create new suggestion
                 suggestion = new Suggestion(
                     null,
-                    request.Description,
+                    request.Description ?? string.Empty,
                     Enum.Parse<SuggestionSource>(request.Source, true),
-                    Enum.Parse<SuggestionType>(request.TypeId.ToString(), true),
-                    Enum.Parse<SuggestionStatus>(request.StatusId.ToString(), true),
-                    Enum.Parse<SuggestionPriority>(request.PriorityId.ToString(), true),
+                    Enum.Parse<SuggestionType>(request.Type, true),
+                    Enum.Parse<SuggestionStatus>(request.Status, true),
+                    Enum.Parse<SuggestionPriority>(request.Priority, true),
                     request.EmployeeId,
                     employee!.DepartmentId,
                     request.Notes,

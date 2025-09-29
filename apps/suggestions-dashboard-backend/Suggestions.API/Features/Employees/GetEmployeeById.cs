@@ -59,6 +59,7 @@ public static class GetEmployeeById
                         Source = s.Source.ToString(),
                         Notes = s.Notes,
                         EmployeeId = s.Employee.Id,
+                        EmployeeName = e.Name,
                         CreatedBy = s.CreatedByAdmin != null ? s.CreatedByAdmin.Username : null,
                         DateCreated = s.DateCreated,
                         DateUpdated = s.DateUpdated

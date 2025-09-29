@@ -25,6 +25,16 @@ Log.Logger = new LoggerConfiguration()
 // =======================================================
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddSingleton<AuditingInterceptor>();
 
 builder.Services.AddDbContext<SuggestionsContext>((sp, options) =>
@@ -68,6 +78,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 

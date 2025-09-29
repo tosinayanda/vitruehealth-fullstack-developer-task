@@ -5,8 +5,8 @@ public enum SuggestionStatus
     Pending = 1,
     In_Progress = 2,
     Overdue = 3,
-    Completed = 3,
-    Dismissed = 4
+    Completed = 4,
+    Dismissed = 5
 }
 
 public enum SuggestionPriority

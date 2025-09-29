@@ -70,6 +70,9 @@ public static class GetAllSuggestions
                 }
             }
             
+            var totalRecords = await searchQuery.CountAsync(cancellationToken);
+            var totalPages = (int)Math.Ceiling(totalRecords / (double)request.paging.PageSize);
+
             var response = await searchQuery
                 .Skip((request.paging.PageNumber - 1) * request.paging.PageSize)
                 .Take(request.paging.PageSize)
@@ -83,14 +86,16 @@ public static class GetAllSuggestions
                     Source = s.Source.ToString(),
                     Notes = s.Notes,
                     EmployeeId = s.Employee.Id,
+                    EmployeeName = s.Employee.Name,
                     CreatedBy = s.CreatedByAdmin != null ? s.CreatedByAdmin.Username : null,
                     DateCreated = s.DateCreated,
                     DateUpdated = s.DateUpdated
                 })
                 .AsNoTracking()
+                .OrderByDescending(s => s.DateCreated)
                 .ToListAsync(cancellationToken);
 
-            return new PagedResponse<IEnumerable<SuggestionDto?>>(response, request.paging.PageNumber, request.paging.PageSize);
+            return new PagedResponse<IEnumerable<SuggestionDto?>>(response, request.paging.PageNumber, request.paging.PageSize, totalPages, totalRecords);
         }
     }
 }

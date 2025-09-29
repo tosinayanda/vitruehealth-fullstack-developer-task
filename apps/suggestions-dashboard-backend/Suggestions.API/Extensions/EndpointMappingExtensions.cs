@@ -7,6 +7,7 @@ public static class EndpointMappingExtensions
         Features.Suggestions.CreateOrUpdateSuggestion.MapEndpoint(app);
         Features.Suggestions.GetAllSuggestions.MapEndpoint(app);
         Features.Suggestions.GetSuggestionById.MapEndpoint(app);
+        Features.Suggestions.CreateOrUpdateSuggestionBulk.MapEndpoint(app);
 
         Features.Employees.GetAllEmployees.MapEndpoint(app);
         Features.Employees.GetEmployeeById.MapEndpoint(app);

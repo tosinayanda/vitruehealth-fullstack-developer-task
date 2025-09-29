@@ -47,6 +47,8 @@ public static class GetSuggestionById
                     Source = s.Source.ToString(),
                     Notes = s.Notes,
                     EmployeeId = s.Employee.Id,
+                    EmployeeName = s.Employee.Name,
+                    // EmployeeDepartment = s.Employee.Department,
                     CreatedBy = s.CreatedByAdmin != null ? s.CreatedByAdmin.Username : null,
                     DateCreated = s.DateCreated,
                     DateUpdated = s.DateUpdated

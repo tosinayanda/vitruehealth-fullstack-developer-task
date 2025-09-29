@@ -19,7 +19,7 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
 
         // Relationships
         builder.HasMany(d => d.Employees)
-            .WithOne() // Employee doesn't seem to have a Department navigation property back, so we use WithOne()
+            .WithOne(e => e.Department)
             .HasForeignKey(x => x.DepartmentId)
             // EF Core will look for a shadow foreign key named 'DepartmentId' in Employee or you need to add it to the Employee entity
             .IsRequired()

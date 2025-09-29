@@ -44,72 +44,64 @@ public static class GetAllEmployees
 
         public async Task<PagedResponse<IEnumerable<EmployeeDto?>>> Handle(Query request, CancellationToken cancellationToken)
         {
-            try
+
+            // Performing a complex query joining multiple tables
+            IQueryable<Employee> searchQuery = _db.Employees
+                    .Include(s => s.Suggestions)
+                        .ThenInclude(s => s.CreatedByAdmin)
+                    .Include(s => s.Department);
+
+            if (request.criteria != null)
             {
-                _logger.LogInformation("Handling GetAllEmployees query");
-
-                _logger.LogInformation(System.Text.Json.JsonSerializer.Serialize(request));
-
-                // Performing a complex query joining multiple tables
-                IQueryable<Employee> searchQuery = _db.Employees
-                        .Include(s => s.Suggestions)
-                            .ThenInclude(s => s.CreatedByAdmin)
-                        .Include(s => s.Department);
-
-                if (request.criteria != null)
+                if (!string.IsNullOrEmpty(request.criteria.Name))
                 {
-                    if (!string.IsNullOrEmpty(request.criteria.Name))
-                    {
-                        searchQuery = searchQuery.Where(e => e.Name.Contains(request.criteria.Name));
-                    }
-
-                    if (!string.IsNullOrEmpty(request.criteria.Department))
-                    {
-                        searchQuery = searchQuery.Where(e => e.Department.Name == request.criteria.Department);
-                    }
-
-                    if (request.criteria.EmployeeId.HasValue)
-                    {
-                        searchQuery = searchQuery.Where(e => e.Id == request.criteria.EmployeeId.Value);
-                    }
+                    searchQuery = searchQuery.Where(e => e.Name.Contains(request.criteria.Name));
                 }
 
-                var response = await searchQuery
-                    .Skip((request.paging.PageNumber - 1) * request.paging.PageSize)
-                    .Take(request.paging.PageSize)
-                                    .Select(e => new EmployeeDto()
+                if (!string.IsNullOrEmpty(request.criteria.Department))
+                {
+                    searchQuery = searchQuery.Where(e => e.Department.Name == request.criteria.Department);
+                }
+
+                if (request.criteria.EmployeeId.HasValue)
+                {
+                    searchQuery = searchQuery.Where(e => e.Id == request.criteria.EmployeeId.Value);
+                }
+            }
+
+            var totalRecords = await searchQuery.CountAsync(cancellationToken);
+            var totalPages = (int)Math.Ceiling(totalRecords / (double)request.paging.PageSize);
+
+            var response = await searchQuery
+                .Skip((request.paging.PageNumber - 1) * request.paging.PageSize)
+                .Take(request.paging.PageSize)
+                                .Select(e => new EmployeeDto()
+                                {
+                                    Id = e.Id,
+                                    Name = e.Name,
+                                    Department = e.Department.Name,
+                                    Suggestions = e.Suggestions.Select(s => new SuggestionDto()
                                     {
-                                        Id = e.Id,
-                                        Name = e.Name,
-                                        Department = e.Department.Name,
-                                        Suggestions = e.Suggestions.Select(s => new SuggestionDto()
-                                        {
-                                            Id = s.Id,
-                                            Description = s.Description,
-                                            Status = s.Status.ToString(),
-                                            Priority = s.Priority.ToString(),
-                                            Type = s.Type.ToString(),
-                                            Source = s.Source.ToString(),
-                                            Notes = s.Notes,
-                                            EmployeeId = s.Employee.Id,
-                                            CreatedBy = s.CreatedByAdmin != null ? s.CreatedByAdmin.Username : null,
-                                            DateCreated = s.DateCreated,
-                                            DateUpdated = s.DateUpdated
-                                        }).ToList()
-                                    })
-                    .AsNoTracking()
-                    .ToListAsync(cancellationToken);
+                                        Id = s.Id,
+                                        Description = s.Description,
+                                        Status = s.Status.ToString(),
+                                        Priority = s.Priority.ToString(),
+                                        Type = s.Type.ToString(),
+                                        Source = s.Source.ToString(),
+                                        Notes = s.Notes,
+                                        EmployeeId = s.Employee.Id,
+                                        CreatedBy = s.CreatedByAdmin != null ? s.CreatedByAdmin.Username : null,
+                                        DateCreated = s.DateCreated,
+                                        DateUpdated = s.DateUpdated
+                                    }).ToList()
+                                })
+                .AsNoTracking()
+                // .OrderByDescending(s => s.DateCreated)
+                .ToListAsync(cancellationToken);
 
-                return new PagedResponse<IEnumerable<EmployeeDto?>>(response, request.paging.PageNumber, request.paging.PageSize);
-
-            }
-            catch (Exception ex)
-            {
-                // TODO
-                _logger.LogError(ex, "Error occurred while handling GetAllEmployees query");
-                return null;
-            }
+            return new PagedResponse<IEnumerable<EmployeeDto?>>(response, request.paging.PageNumber, request.paging.PageSize, totalPages, totalRecords);
 
         }
     }
 }
+

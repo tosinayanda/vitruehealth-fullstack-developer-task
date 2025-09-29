@@ -17,6 +17,7 @@ public static class Routes
         public const string Create = Base;
         public const string Update = Base + "/{id:Guid}";
         public const string GetById = Base + "/{id:Guid}";
+        public const string BulkCreateOrUpdate = Base + "/bulk";
     }
 
     public static class Employees
