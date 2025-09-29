@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Suggestions.API.Features.Suggestions.Dtos;
 
 namespace Suggestions.API.Features.Employees.Dtos;
 
@@ -15,4 +16,5 @@ public record class EmployeeDto
 
     [JsonPropertyName("riskLevel")]
     public string RiskLevel { get; set; }
+    public List<SuggestionDto> Suggestions { get; internal set; }
 }

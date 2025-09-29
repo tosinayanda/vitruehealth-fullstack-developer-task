@@ -51,6 +51,7 @@ public static class GetSuggestionById
                     DateCreated = s.DateCreated,
                     DateUpdated = s.DateUpdated
                 })
+                .AsNoTracking()
                 .FirstOrDefaultAsync(cancellationToken);
 
             return new BaseResponse<SuggestionDto?>(response);

@@ -124,7 +124,7 @@ public static class DatabaseSeeder
 
     public static async Task<SeedData?> ReadSeedDataFromJsonFileAsync()
     {
-        var filePath = "seed-data.json";
+        var filePath = "sample-data.json";
 
         if (!File.Exists(filePath))
         {

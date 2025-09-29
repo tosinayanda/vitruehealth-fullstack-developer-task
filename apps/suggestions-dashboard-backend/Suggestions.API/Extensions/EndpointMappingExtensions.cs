@@ -8,5 +8,9 @@ public static class EndpointMappingExtensions
         Features.Suggestions.GetAllSuggestions.MapEndpoint(app);
         Features.Suggestions.GetSuggestionById.MapEndpoint(app);
 
+        Features.Employees.GetAllEmployees.MapEndpoint(app);
+        Features.Employees.GetEmployeeById.MapEndpoint(app);
+
+        
     }
 }

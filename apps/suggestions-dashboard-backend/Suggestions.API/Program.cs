@@ -1,6 +1,28 @@
+using Serilog;
 using Suggestions.API.Database.Interceptors;
 using Suggestions.API.Extensions;
 
+// =======================================================
+// ⭐ LOGGING SETUP ⭐
+// =======================================================
+var configurationBuilder = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+var configuration = configurationBuilder.Build();
+
+Log.Logger = new LoggerConfiguration()
+        .MinimumLevel.Verbose()
+        .Enrich.WithProperty("ApplicationContext", "Suggestions.API")
+        .Enrich.FromLogContext()
+        .WriteTo.Console()
+        .ReadFrom.Configuration(configuration)
+        .CreateLogger();
+
+// =======================================================
+// ⭐ DI SETUP⭐
+// =======================================================
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<AuditingInterceptor>();
@@ -34,7 +56,7 @@ builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 // Add standard services
 builder.Services.AddEndpointsApiExplorer();
 
-// builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen();
 
 // Add HttpClientFactory for Keycloak communication
 builder.Services.AddHttpClient();
@@ -43,8 +65,8 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    // app.UseSwagger();
-    // app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -62,9 +84,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     try
     {
-        // 2. Resolve the DbContext instance
         var context = services.GetRequiredService<SuggestionsContext>();
-
         // context.Database.Migrate();
 
         await DatabaseSeeder.SeedDatabaseAsync(app);

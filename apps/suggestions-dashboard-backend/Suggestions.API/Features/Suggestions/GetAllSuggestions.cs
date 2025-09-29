@@ -87,6 +87,7 @@ public static class GetAllSuggestions
                     DateCreated = s.DateCreated,
                     DateUpdated = s.DateUpdated
                 })
+                .AsNoTracking()
                 .ToListAsync(cancellationToken);
 
             return new PagedResponse<IEnumerable<SuggestionDto?>>(response, request.paging.PageNumber, request.paging.PageSize);

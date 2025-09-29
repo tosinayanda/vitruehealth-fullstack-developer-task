@@ -8,7 +8,7 @@ public class AuditLog
     public DateTimeOffset Timestamp { get; set; }
     public required string ActionType { get; set; }
     public required string EntityName { get; set; }
-    public int RecordId { get; set; }
+    public string RecordId { get; set; }
     public required string Changes { get; set; }
     public int? AdminId { get; set; }
 
@@ -32,7 +32,7 @@ public class AuditLog
             Timestamp = DateTimeOffset.UtcNow,
             ActionType = entry.State.ToString(), // Added, Modified, Deleted
             EntityName = entry.Entity.GetType().Name,
-            RecordId = (int)entry.Property("Id").CurrentValue!,
+            RecordId = entry.Property("Id").CurrentValue!?.ToString(),
             Changes = JsonSerializer.Serialize(changes),
             AdminId = 1 // Hardcoded for demo; in a real app, get this from HttpContext
         };

@@ -3,7 +3,7 @@ namespace Suggestions.API.Entities;
 public enum SuggestionStatus
 {
     Pending = 1,
-    InProgress = 2,
+    In_Progress = 2,
     Overdue = 3,
     Completed = 3,
     Dismissed = 4
