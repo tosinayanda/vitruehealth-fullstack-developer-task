@@ -17,6 +17,8 @@ Before running the project, ensure you have the following installed:
 * **Node.js** and **npm** or **yarn** 22.14.0
 * **Docker** and **Docker Compose** 3.8
 
+Clone the Project and use the main branch
+
 ---
 
 ## 💻 Manual Execution
@@ -38,7 +40,8 @@ Follow these steps to run the frontend and backend applications separately on yo
     ```bash
     dotnet run
     ```
-    The API should start and typically run on a port like `http://localhost:5104` or `http://localhost:5001` (HTTPS). Check the console output for the exact address.
+    The API should start and typically run on a port like `http://localhost:5104` or `http://localhost:5001` (HTTPS). Check the console output for the exact address. Copy the API url and replace the value for the api url environment variables
+    [text](apps/suggestions-dashboard/.env)
 
 ### 2. Frontend (Vue.js)
 
@@ -59,7 +62,7 @@ Follow these steps to run the frontend and backend applications separately on yo
 
 ---
 
-## 🐳 Docker Compose Execution
+## 🐳 Docker Compose  (!!IGNORE! DOES NOT WORK)
 
 Use Docker Compose to build and run both services in isolated containers.
 
