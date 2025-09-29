@@ -90,6 +90,8 @@ services:
       - 3000:80 # Or the port your frontend uses (e.g., 80 for nginx, 3000 for a React app)
     environment:
       - API_URL=http://backend:3001 # URL to your backend API
+      - VITE_API_URL=http://backend:3001 # URL to your backend API
+      - VUE_APP_API_URL=http://backend:3001 # URL to your backend API
       # Add any other frontend-specific environment variables
     depends_on:
       - keycloak
